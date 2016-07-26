@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  nginx:
+      build: ./nginx/
+      container_name: web-server
+      ports:
+          - 443:443
+      links:
+          - php
+      volumes:
+          - /home/nightlinus/PhpstormProjects/hermes/:/app
+  php:
+      build: ./php/
+      container_name: php7
+      env_file: /home/nightlinus/PhpstormProjects/hermes/.env
+      expose:
+          - 9000
+      volumes:
+          - /home/nightlinus/PhpstormProjects/hermes/:/app
+          - /usr/lib/oracle/12.1/client64/network/admin/tnsnames.ora:/etc/tnsnames.ora
