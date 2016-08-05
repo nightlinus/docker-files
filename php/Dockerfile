@@ -9,6 +9,7 @@ RUN apt-get update \
     && apt-get install -y  \
                     unzip \
                     libaio1 \
+                    libxml2-dev \
                     libaio-dev \
                     libfreetype6-dev \
                     libjpeg62-turbo-dev \
@@ -21,7 +22,8 @@ RUN apt-get update \
     && echo 'instantclient,/usr/local/instantclient' | pecl install oci8 \
     && pecl install xdebug \
     && docker-php-ext-install gd \
-    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false unzip libaio-dev \
+    && docker-php-ext-install soap \
+    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false unzip libaio-dev libxml2-dev  \
     && apt-get clean -y \
     && rm /tmp -r \
     && mkdir -p /app/web \
