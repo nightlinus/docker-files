@@ -5,27 +5,21 @@ services:
       build: ./nginx/
       image: nightlinus/hermes:nginx
       container_name: web-server
-      ports:
-          - 443:443
-      volumes_from:
-        - php
-  php:
+  php70:
       build:
         context: ./php/
         dockerfile: php70-fpm.Dockerfile
-      image: nightlinus/hermes:7.0-fpm-xdebug
+      image: nightlinus/hermes:7.0-fpm
       container_name: php70
-      env_file: /home/nightlinus/PhpstormProjects/hermes/.env
-      volumes:
-          - /home/nightlinus/PhpstormProjects/hermes/:/app
-          - $TNS_ADMIN/tnsnames.ora:/etc/tnsnames.ora
+  php70-xdebug:
+      build:
+        context: ./php/
+        dockerfile: php70-fpm-xdebug.Dockerfile
+      image: nightlinus/hermes:7.0-fpm-xdebug
+      container_name: php70-xdebug
   php56:
       build:
         context: ./php/
-        dockerfile: php56-fpm.Dockerfile
+        dockerfile: php56-fpm-xdebug.Dockerfile
       image: nightlinus/hermes:5.6-fpm-xdebug
-      container_name: php56
-      env_file: /home/nightlinus/PhpstormProjects/hermes/.env
-      volumes:
-          - /home/nightlinus/PhpstormProjects/hermes/:/app
-          - $TNS_ADMIN/tnsnames.ora:/etc/tnsnames.ora
+      container_name: php56-xdebug
