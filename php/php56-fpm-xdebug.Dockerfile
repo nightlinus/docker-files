@@ -36,4 +36,4 @@ COPY ./config/fpm/php-fpm.conf /usr/local/etc/
 COPY ./config/fpm/pool.d /usr/local/etc/pool.d
 
 VOLUME /app
-WORKDIR /app/web
+WORKDIR /app
