@@ -2,8 +2,8 @@ FROM php:7.0-fpm
 MAINTAINER Mikhail Chervontsev <m.a.chervontsev@gmail.com>
 
 # Oracle instantclient
-ADD ./instantclient/instantclient-basiclite-linux.x64-12.1.0.2.0.zip /tmp/instantclient.zip
-ADD ./instantclient/instantclient-sdk-linux.x64-12.1.0.2.0.zip /tmp/sdk.zip
+COPY ./instantclient/instantclient-basiclite-linux.x64-12.1.0.2.0.zip /tmp/instantclient.zip
+COPY ./instantclient/instantclient-sdk-linux.x64-12.1.0.2.0.zip /tmp/sdk.zip
 
 RUN apt-get update \
     && apt-get install -y  \
