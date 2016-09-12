@@ -23,6 +23,7 @@ RUN apt-get update \
     && pecl install xdebug \
     && docker-php-ext-install gd \
     && docker-php-ext-install soap \
+    && docker-php-ext-install zip \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false unzip libaio-dev libxml2-dev  \
     && apt-get clean -y \
     && rm /tmp -r \
