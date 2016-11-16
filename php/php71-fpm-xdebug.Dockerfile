@@ -1,4 +1,4 @@
-FROM php:5.6-fpm
+FROM php:7.1-rc-fpm
 MAINTAINER Mikhail Chervontsev <m.a.chervontsev@gmail.com>
 
 # Oracle instantclient
@@ -19,7 +19,7 @@ RUN apt-get update \
     && ln -s /usr/local/instantclient_12_1 /usr/local/instantclient \
     && ln -s /usr/local/instantclient/libclntsh.so.12.1 /usr/local/instantclient/libclntsh.so \
     && ldconfig \
-    && echo 'instantclient,/usr/local/instantclient' | pecl install oci8-2.0.12 \
+    && echo 'instantclient,/usr/local/instantclient' | pecl install oci8 \
     && pecl install xdebug \
     && docker-php-ext-install gd \
     && docker-php-ext-install soap \
