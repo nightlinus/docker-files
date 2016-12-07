@@ -1,10 +1,4 @@
-version: '2'
-
-services:
-  nginx:
-      build: ./nginx/
-      image: nightlinus/hermes:nginx
-      container_name: web-server
+cd
   php70:
       build:
         context: ./php/
@@ -22,4 +16,10 @@ services:
         context: ./php/
         dockerfile: php71-fpm-xdebug.Dockerfile
       image: nightlinus/hermes:7.1-fpm-xdebug
-      container_name: php56-xdebug
+      container_name: php71-xdebug
+  php71-composer:
+      build:
+        context: ./php/
+        dockerfile: php71-composer.Dockerfile
+      image: nightlinus/composer
+      container_name: php71-composer
