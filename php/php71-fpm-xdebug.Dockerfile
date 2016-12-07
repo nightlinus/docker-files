@@ -1,12 +1,12 @@
-FROM php:7.1-rc-fpm
+FROM php:7.1-fpm
 MAINTAINER Mikhail Chervontsev <m.a.chervontsev@gmail.com>
 
 # Oracle instantclient
 COPY ./instantclient/instantclient-basiclite-linux.x64-12.1.0.2.0.zip /tmp/instantclient.zip
 COPY ./instantclient/instantclient-sdk-linux.x64-12.1.0.2.0.zip /tmp/sdk.zip
 
-RUN apt-get update \
-    && apt-get install -y  \
+RUN apt-get update -qqq \
+    && apt-get install -y -qqq  \
                     unzip \
                     libaio1 \
                     libxml2-dev \
