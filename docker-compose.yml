@@ -1,4 +1,10 @@
-cd
+version: '2'
+
+services:
+  nginx:
+      build: ./nginx/
+      image: nightlinus/hermes:nginx
+      container_name: web-server
   php70:
       build:
         context: ./php/
