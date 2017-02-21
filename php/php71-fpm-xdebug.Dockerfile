@@ -14,6 +14,7 @@ RUN apt-get update -qqq \
                     libfreetype6-dev \
                     libjpeg62-turbo-dev \
                     libpng12-dev \
+                    net-tools \
     && unzip /tmp/instantclient.zip -d /usr/local/ \
     && unzip /tmp/sdk.zip -d /usr/local/ \
     && ln -s /usr/local/instantclient_12_1 /usr/local/instantclient \

@@ -5,18 +5,6 @@ services:
       build: ./nginx/
       image: nightlinus/hermes:nginx
       container_name: web-server
-  php70:
-      build:
-        context: ./php/
-        dockerfile: php70-fpm.Dockerfile
-      image: nightlinus/hermes:7.0-fpm
-      container_name: php70
-  php70-xdebug:
-      build:
-        context: ./php/
-        dockerfile: php70-fpm-xdebug.Dockerfile
-      image: nightlinus/hermes:7.0-fpm-xdebug
-      container_name: php70-xdebug
   php71-xdebug:
       build:
         context: ./php/
