@@ -22,9 +22,10 @@ RUN apt-get update -qqq \
     && docker-php-ext-install zip \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer global require hirak/prestissimo  \
-    && composer global require phpunit/phpunit  \
     && composer global require phpspec/phpspec  \
+    && composer global require phpunit/phpunit  \
     && composer global require squizlabs/php_codesniffer \
+    && composer global require psy/psysh \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false unzip libaio-dev libxml2-dev  \
     && apt-get clean -y \
     && rm /tmp -r \
