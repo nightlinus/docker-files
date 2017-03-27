@@ -5,13 +5,13 @@ services:
       build: ./nginx/
       image: nightlinus/hermes:nginx
       container_name: web-server
-  php71-xdebug:
+  php71:
       build:
         context: ./php/
         dockerfile: php71-fpm-xdebug.Dockerfile
       image: nightlinus/hermes:7.1-fpm-xdebug
       container_name: php71-xdebug
-  php71-composer:
+  composer:
       build:
         context: ./php/
         dockerfile: php71-composer.Dockerfile
