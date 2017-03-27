@@ -5,6 +5,13 @@ MAINTAINER Mikhail Chervontsev <m.a.chervontsev@gmail.com>
 COPY ./instantclient/instantclient-basiclite-linux.x64-12.1.0.2.0.zip /tmp/instantclient.zip
 COPY ./instantclient/instantclient-sdk-linux.x64-12.1.0.2.0.zip /tmp/sdk.zip
 
+ENV NLS_LANG RUSSIAN_AMERICA.AL32UTF8
+ENV NLS_SORT RUSSIAN
+ENV NLS_DATE_LANGUAGE AMERICAN
+ENV NLS_LANGUAGE RUSSIAN
+ENV NLS_CALENDAR GREGORIAN
+ENV NLS_DATE_FORMAT YYYY-MM-DD HH24:MI:SS
+
 RUN apt-get update -qqq \
     && apt-get install -y -qqq  \
                     unzip \
@@ -14,6 +21,9 @@ RUN apt-get update -qqq \
                     libfreetype6-dev \
                     libjpeg62-turbo-dev \
                     libpng12-dev \
+                    strace \
+                    vim \
+                    less \
                     net-tools \
     && unzip /tmp/instantclient.zip -d /usr/local/ \
     && unzip /tmp/sdk.zip -d /usr/local/ \
