@@ -11,6 +11,9 @@ ENV NLS_DATE_LANGUAGE AMERICAN
 ENV NLS_LANGUAGE RUSSIAN
 ENV NLS_CALENDAR GREGORIAN
 ENV NLS_DATE_FORMAT YYYY-MM-DD HH24:MI:SS
+ENV COMPOSER_HOME /root/composer
+ENV COMPOSER_VERSION master
+ENV PATH $COMPOSER_HOME/vendor/bin:$PATH
 
 RUN apt-get update -qqq \
     && apt-get install -y -qqq  \
@@ -35,6 +38,10 @@ RUN apt-get update -qqq \
     && docker-php-ext-install gd \
     && docker-php-ext-install soap \
     && docker-php-ext-install zip \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    && composer global require phpspec/phpspec  \
+    && composer global require phpunit/phpunit  \
+    && composer global require psy/psysh \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false unzip libaio-dev libxml2-dev  \
     && apt-get clean -y \
     && rm /tmp -r \
