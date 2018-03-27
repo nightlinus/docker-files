@@ -11,6 +11,12 @@ services:
         dockerfile: php71-fpm-xdebug.Dockerfile
       image: nightlinus/hermes:7.1-fpm-xdebug
       container_name: php71-xdebug
+  php72:
+      build:
+        context: ./php/
+        dockerfile: php72-fpm-xdebug.Dockerfile
+      image: nightlinus/hermes:7.2-fpm-xdebug
+      container_name: php72-xdebug
   composer:
       build:
         context: ./php/

@@ -1,4 +1,4 @@
-FROM php:7.1-fpm
+FROM php:7.2-fpm
 MAINTAINER Mikhail Chervontsev <m.a.chervontsev@gmail.com>
 
 ENV COMPOSER_HOME /root/composer
@@ -13,13 +13,16 @@ RUN apt-get update -qqq \
                     libaio-dev \
                     libfreetype6-dev \
                     libjpeg62-turbo-dev \
-                    libpng12-dev \
                     strace \
                     git \
                     vim \
+                    libbz2-1.0 \
+                    libbz2-dev \
     && docker-php-ext-install gd \
     && docker-php-ext-install soap \
     && docker-php-ext-install zip \
+    && docker-php-ext-install bz2 \
+    && docker-php-ext-install pcntl \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer global require hirak/prestissimo  \
     && composer global require phpspec/phpspec  \
