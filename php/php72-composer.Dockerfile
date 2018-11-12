@@ -23,6 +23,9 @@ RUN apt-get update -qqq \
     && docker-php-ext-install zip \
     && docker-php-ext-install bz2 \
     && docker-php-ext-install pcntl \
+    && docker-php-ext-install intl \
+    && docker-php-ext-install bcmath \
+    && docker-php-ext-install calendar \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer global require hirak/prestissimo  \
     && composer global require phpspec/phpspec  \
@@ -38,6 +41,8 @@ RUN apt-get update -qqq \
 COPY ./config/php.ini /usr/local/etc/php/php.ini
 COPY ./config/fpm/php-fpm.conf /usr/local/etc/
 COPY ./config/fpm/pool.d /usr/local/etc/pool.d
+
+USER 1000
 
 VOLUME /app
 WORKDIR /app

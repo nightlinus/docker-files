@@ -1,4 +1,4 @@
-FROM php:7.1-fpm
+FROM php:7.2-fpm
 MAINTAINER Mikhail Chervontsev <m.a.chervontsev@gmail.com>
 
 # Oracle instantclient
@@ -37,12 +37,21 @@ RUN apt-get update -qqq \
     && echo '/usr/local/instantclient' > /etc/ld.so.conf.d/oracle-instantclient.conf \
     && ldconfig \
     && echo 'instantclient,/usr/local/instantclient' | pecl install oci8 \
-    && pecl install xdebug \
     && docker-php-ext-install gd \
     && docker-php-ext-install soap \
     && docker-php-ext-install zip \
     && docker-php-ext-install bz2 \
     && docker-php-ext-install pcntl \
+    && docker-php-ext-install intl \
+    && docker-php-ext-install bcmath \
+    && docker-php-ext-install calendar \
+    && version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
+    && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$version \
+    && mkdir -p /tmp/blackfire \
+    && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire \
+    && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so \
+    && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > $PHP_INI_DIR/conf.d/blackfire.ini \
+    && rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer global require phpspec/phpspec  \
     && composer global require phpunit/phpunit  \
@@ -54,10 +63,11 @@ RUN apt-get update -qqq \
     && chown www-data:www-data -R /app
 
 COPY ./config/oci8.ini /usr/local/etc/php/conf.d/30-oci8.ini
-COPY ./config/xdebug.ini /usr/local/etc/php/conf.d/30-xdebug.ini
 COPY ./config/php.ini /usr/local/etc/php/php.ini
 COPY ./config/fpm/php-fpm.conf /usr/local/etc/
 COPY ./config/fpm/pool.d /usr/local/etc/pool.d
+
+USER 1000
 
 VOLUME /app
 WORKDIR /app

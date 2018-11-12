@@ -5,12 +5,12 @@ services:
       build: ./nginx/
       image: nightlinus/hermes:nginx
       container_name: web-server
-  php71:
+  php72-blackfire:
       build:
         context: ./php/
-        dockerfile: php71-fpm-xdebug.Dockerfile
-      image: nightlinus/hermes:7.1-fpm-xdebug
-      container_name: php71-xdebug
+        dockerfile: php72-fpm-blackfire.Dockerfile
+      image: nightlinus/hermes:7.2-fpm-blackfire
+      container_name: php72-blackfire
   php72:
       build:
         context: ./php/
@@ -20,6 +20,6 @@ services:
   composer:
       build:
         context: ./php/
-        dockerfile: php71-composer.Dockerfile
+        dockerfile: php72-composer.Dockerfile
       image: nightlinus/composer
-      container_name: php71-composer
+      container_name: php72-composer
