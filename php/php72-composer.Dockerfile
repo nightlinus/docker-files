@@ -1,7 +1,7 @@
 FROM php:7.2-fpm
 MAINTAINER Mikhail Chervontsev <m.a.chervontsev@gmail.com>
 
-ENV COMPOSER_HOME /root/composer
+ENV COMPOSER_HOME /composer
 ENV COMPOSER_VERSION master
 ENV PATH $COMPOSER_HOME/vendor/bin:$PATH
 
@@ -32,11 +32,13 @@ RUN apt-get update -qqq \
     && composer global require phpunit/phpunit  \
     && composer global require squizlabs/php_codesniffer \
     && composer global require psy/psysh \
+    && composer global require brianium/paratest \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false unzip libaio-dev libxml2-dev  \
     && apt-get clean -y \
     && rm /tmp -r \
     && mkdir -p /app/web \
-    && chown www-data:www-data -R /app
+    && chown www-data:www-data -R /app \
+    && chmod a+rwx -R /composer
 
 COPY ./config/php.ini /usr/local/etc/php/php.ini
 COPY ./config/fpm/php-fpm.conf /usr/local/etc/
