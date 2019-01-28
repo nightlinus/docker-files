@@ -61,7 +61,7 @@ COPY ./config/oci8.ini /usr/local/etc/php/conf.d/30-oci8.ini
 COPY ./config/xdebug.ini /usr/local/etc/php/conf.d/30-xdebug.ini
 COPY ./config/php.ini /usr/local/etc/php/php.ini
 COPY ./config/fpm/php-fpm.conf /usr/local/etc/
-COPY ./config/fpm/pool.d /usr/local/etc/pool.d
+COPY ./config/fpm/pool.d/www72.conf /usr/local/etc/pool.d/www72.conf
 
 USER 1000
 

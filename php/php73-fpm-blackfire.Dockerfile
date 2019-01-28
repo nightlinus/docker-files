@@ -1,4 +1,4 @@
-FROM php:7.2-fpm
+FROM php:7.3-fpm
 MAINTAINER Mikhail Chervontsev <m.a.chervontsev@gmail.com>
 
 # Oracle instantclient
@@ -27,6 +27,8 @@ RUN apt-get update -qqq \
                     strace \
                     vim \
                     less \
+                    libzip4 \
+                    libzip-dev \
                     net-tools \
                     libbz2-1.0 \
                     libbz2-dev \
@@ -66,7 +68,7 @@ RUN apt-get update -qqq \
 COPY ./config/oci8.ini /usr/local/etc/php/conf.d/30-oci8.ini
 COPY ./config/php.ini /usr/local/etc/php/php.ini
 COPY ./config/fpm/php-fpm.conf /usr/local/etc/
-COPY ./config/fpm/pool.d /usr/local/etc/pool.d
+COPY ./config/fpm/pool.d/www73.conf /usr/local/etc/pool.d/www73.conf
 
 USER 1000
 

@@ -1,4 +1,4 @@
-FROM php:7.2-fpm
+FROM php:7.3-cli
 MAINTAINER Mikhail Chervontsev <m.a.chervontsev@gmail.com>
 
 ENV COMPOSER_HOME /composer
@@ -39,10 +39,6 @@ RUN apt-get update -qqq \
     && mkdir -p /app/web \
     && chown www-data:www-data -R /app \
     && chmod a+rwx -R /composer
-
-COPY ./config/php.ini /usr/local/etc/php/php.ini
-COPY ./config/fpm/php-fpm.conf /usr/local/etc/
-COPY ./config/fpm/pool.d /usr/local/etc/pool.d
 
 USER 1000
 
