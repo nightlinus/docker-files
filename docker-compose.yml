@@ -29,3 +29,9 @@ services:
         dockerfile: php73-composer.Dockerfile
       image: nightlinus/composer
       container_name: php73-composer
+  rabbitmq:
+      build:
+        context: .
+        dockerfile: ./rabbitmq.Dockerfile
+      image: nightlinus/rabbitmq
+      container_name: rabbitmq
