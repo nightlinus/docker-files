@@ -11,12 +11,6 @@ services:
         dockerfile: php73-fpm-blackfire.Dockerfile
       image: nightlinus/hermes:7.3-fpm-blackfire
       container_name: php73-blackfire
-  php72:
-      build:
-        context: ./php/
-        dockerfile: php72-fpm-xdebug.Dockerfile
-      image: nightlinus/hermes:7.2-fpm-xdebug
-      container_name: php72-xdebug
   php73:
     build:
       context: ./php/
