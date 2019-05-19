@@ -32,6 +32,7 @@ RUN apt-get update -qqq \
                     net-tools \
                     libbz2-1.0 \
                     libbz2-dev \
+                    libldap2-dev \
     && unzip /tmp/instantclient.zip -d /usr/local/ \
     && unzip /tmp/sdk.zip -d /usr/local/ \
     && ln -s /usr/local/instantclient_18_3 /usr/local/instantclient \
@@ -46,6 +47,8 @@ RUN apt-get update -qqq \
     && docker-php-ext-install intl \
     && docker-php-ext-install bcmath \
     && docker-php-ext-install calendar \
+    && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
+    && docker-php-ext-install ldap \
     && version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
     && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$version \
     && mkdir -p /tmp/blackfire \
@@ -58,7 +61,7 @@ RUN apt-get update -qqq \
     && composer global require phpunit/phpunit  \
     && composer global require psy/psysh \
     && composer global require brianium/paratest \
-    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false unzip libaio-dev libxml2-dev  \
+    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false unzip libaio-dev libxml2-dev libldap2-dev \
     && apt-get clean -y \
     && rm /tmp -r \
     && mkdir -p /app/web \

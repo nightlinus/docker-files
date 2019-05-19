@@ -18,6 +18,7 @@ RUN apt-get update -qqq \
                     vim \
                     libbz2-1.0 \
                     libbz2-dev \
+                    libldap2-dev \
     && docker-php-ext-install gd \
     && docker-php-ext-install soap \
     && docker-php-ext-install zip \
@@ -26,6 +27,8 @@ RUN apt-get update -qqq \
     && docker-php-ext-install intl \
     && docker-php-ext-install bcmath \
     && docker-php-ext-install calendar \
+    && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
+    && docker-php-ext-install ldap \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer global require hirak/prestissimo  \
     && composer global require phpspec/phpspec  \
@@ -33,7 +36,7 @@ RUN apt-get update -qqq \
     && composer global require squizlabs/php_codesniffer \
     && composer global require psy/psysh \
     && composer global require brianium/paratest \
-    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false unzip libaio-dev libxml2-dev  \
+    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false unzip libaio-dev libxml2-dev libldap2-dev \
     && apt-get clean -y \
     && rm /tmp -r \
     && mkdir -p /app/web \
