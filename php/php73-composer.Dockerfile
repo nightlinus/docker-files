@@ -19,6 +19,8 @@ RUN apt-get update -qqq \
                     libbz2-1.0 \
                     libbz2-dev \
                     libldap2-dev \
+                    libzip4 \
+                    libzip-dev \
     && docker-php-ext-install gd \
     && docker-php-ext-install soap \
     && docker-php-ext-install zip \

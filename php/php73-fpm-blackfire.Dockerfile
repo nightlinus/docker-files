@@ -5,6 +5,9 @@ MAINTAINER Mikhail Chervontsev <m.a.chervontsev@gmail.com>
 COPY ./instantclient/instantclient-basiclite-linux.x64-18.3.0.0.0.zip /tmp/instantclient.zip
 COPY ./instantclient/instantclient-sdk-linux.x64-18.3.0.0.0.zip /tmp/sdk.zip
 
+# Install jdbc for liquibase
+COPY ./jdbc/ojdbc8.jar /usr/local/jdbc/ojdbc8.jar
+
 ENV NLS_LANG RUSSIAN_AMERICA.AL32UTF8
 ENV NLS_SORT RUSSIAN
 ENV NLS_DATE_LANGUAGE AMERICAN
@@ -14,8 +17,11 @@ ENV NLS_DATE_FORMAT YYYY-MM-DD HH24:MI:SS
 ENV COMPOSER_HOME /composer
 ENV COMPOSER_VERSION master
 ENV PATH $COMPOSER_HOME/vendor/bin:$PATH
+ENV LIQUIBASE_VERSION 3.8.0
+ENV LIQUIBASE_DRIVER_PATH /usr/local/jdbc/ojdbc8.jar
 
 RUN apt-get update -qqq \
+    && mkdir -p /usr/share/man/man1 \
     && apt-get install -y -qqq  \
                     unzip \
                     libaio1 \
@@ -33,6 +39,7 @@ RUN apt-get update -qqq \
                     libbz2-1.0 \
                     libbz2-dev \
                     libldap2-dev \
+    && rm -R /usr/share/man/man1 \
     && unzip /tmp/instantclient.zip -d /usr/local/ \
     && unzip /tmp/sdk.zip -d /usr/local/ \
     && ln -s /usr/local/instantclient_18_3 /usr/local/instantclient \
@@ -61,6 +68,14 @@ RUN apt-get update -qqq \
     && composer global require phpunit/phpunit  \
     && composer global require psy/psysh \
     && composer global require brianium/paratest \
+
+    && curl -A "Docker" -o /tmp/liquibase.tar.gz -D - -L -s "https://github.com/liquibase/liquibase/releases/download/liquibase-parent-${LIQUIBASE_VERSION}/liquibase-${LIQUIBASE_VERSION}-bin.tar.gz" \
+    && mkdir -p /opt/liquibase \
+    && tar -xzf /tmp/liquibase.tar.gz -C /opt/liquibase \
+    && rm -f /tmp/liquibase.tar.gz \
+    && chmod +x /opt/liquibase/liquibase \
+    && ln -s /opt/liquibase/liquibase /usr/local/bin/ \
+
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false unzip libaio-dev libxml2-dev libldap2-dev \
     && apt-get clean -y \
     && rm /tmp -r \
