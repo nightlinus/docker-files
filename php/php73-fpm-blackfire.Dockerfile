@@ -21,6 +21,10 @@ ENV LIQUIBASE_VERSION 3.8.0
 ENV LIQUIBASE_DRIVER_PATH /usr/local/jdbc/ojdbc8.jar
 
 RUN apt-get update -qqq \
+    && curl -A "Docker" -L https://blackfire.io/api/v1/releases/client/linux_static/amd64 | tar zxp -C /tmp \
+    && mv /tmp/blackfire /usr/bin/blackfire \
+    && rm -Rf /tmp/blackfire \
+
     && mkdir -p /usr/share/man/man1 \
     && apt-get install -y -qqq  \
                     unzip \
