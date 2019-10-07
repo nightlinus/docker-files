@@ -16,7 +16,7 @@ ENV NLS_CALENDAR GREGORIAN
 ENV NLS_DATE_FORMAT YYYY-MM-DD HH24:MI:SS
 ENV COMPOSER_HOME /composer
 ENV COMPOSER_VERSION master
-ENV PATH $COMPOSER_HOME/vendor/bin:$PATH
+ENV PATH $COMPOSER_HOME/vendor/bin:/opt/phpspy:$PATH
 ENV LIQUIBASE_VERSION 3.8.0
 ENV LIQUIBASE_DRIVER_PATH /usr/local/jdbc/ojdbc8.jar
 
@@ -33,6 +33,8 @@ RUN apt-get update -qqq \
                     libpng-dev \
                     strace \
                     vim \
+                    git \
+                    python \
                     less \
                     libzip4 \
                     libzip-dev \
@@ -71,7 +73,11 @@ RUN apt-get update -qqq \
     && chmod +x /opt/liquibase/liquibase \
     && ln -s /opt/liquibase/liquibase /usr/local/bin/ \
 
-    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false unzip libaio-dev libxml2-dev libldap2-dev  \
+    && git clone https://github.com/adsr/phpspy.git /opt/phpspy \
+    && cd /opt/phpspy \
+    && make \
+
+    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false libaio-dev git unzip python libxml2-dev libldap2-dev  \
     && apt-get clean -y \
     && rm /tmp -r \
     && mkdir -p /app/web \
