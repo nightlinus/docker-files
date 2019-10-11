@@ -49,7 +49,7 @@ RUN apt-get update -qqq \
     && echo '/usr/local/instantclient' > /etc/ld.so.conf.d/oracle-instantclient.conf \
     && ldconfig \
     && echo 'instantclient,/usr/local/instantclient' | pecl install oci8 \
-    && pecl install xdebug-2.7.0beta1 \
+    && pecl install xdebug \
     && docker-php-ext-install gd \
     && docker-php-ext-install soap \
     && docker-php-ext-install zip \
