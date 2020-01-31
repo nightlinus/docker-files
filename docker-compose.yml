@@ -5,12 +5,6 @@ services:
       build: ./nginx/
       image: nightlinus/hermes:nginx
       container_name: web-server
-  php73blackfire:
-      build:
-        context: ./php/
-        dockerfile: php73-fpm-blackfire.Dockerfile
-      image: nightlinus/hermes:7.3-fpm-blackfire
-      container_name: php73-blackfire
   php73:
     build:
       context: ./php/
@@ -20,12 +14,24 @@ services:
   composer:
       build:
         context: ./php/
-        dockerfile: php73-composer.Dockerfile
+        dockerfile: php74-composer.Dockerfile
       image: nightlinus/composer
-      container_name: php73-composer
+      container_name: php74-composer
   rabbitmq:
       build:
         context: .
         dockerfile: ./rabbitmq.Dockerfile
       image: nightlinus/rabbitmq
       container_name: rabbitmq
+  php74blackfire:
+    build:
+      context: ./php/
+      dockerfile: php74-fpm-blackfire.Dockerfile
+    image: nightlinus/hermes:7.4-fpm-blackfire
+    container_name: php74-blackfire
+  php74:
+    build:
+      context: ./php/
+      dockerfile: php74-fpm-xdebug.Dockerfile
+    image: nightlinus/hermes:7.4-fpm-xdebug
+    container_name: php74-xdebug
