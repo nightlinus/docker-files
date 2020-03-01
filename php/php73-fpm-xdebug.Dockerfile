@@ -59,11 +59,12 @@ RUN apt-get update -qqq \
     && docker-php-ext-install bcmath \
     && docker-php-ext-install opcache \
     && docker-php-ext-install calendar \
+    && docker-php-ext-install exif \
     && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
     && docker-php-ext-install ldap \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer global require phpspec/phpspec  \
-    && composer global require phpunit/phpunit  \
+    && composer global require "phpunit/phpunit:^8.0"  \
     && composer global require psy/psysh \
     && composer global require brianium/paratest \
     && curl -A "Docker" -o /tmp/liquibase.tar.gz -D - -L -s "https://github.com/liquibase/liquibase/releases/download/v${LIQUIBASE_VERSION}/liquibase-${LIQUIBASE_VERSION}.tar.gz" \

@@ -35,3 +35,4 @@ services:
       dockerfile: php74-fpm-xdebug.Dockerfile
     image: nightlinus/hermes:7.4-fpm-xdebug
     container_name: php74-xdebug
+

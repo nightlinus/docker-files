@@ -33,10 +33,10 @@ RUN apt-get update -qqq \
     && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
     && docker-php-ext-install ldap \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && composer global require brianium/paratest \
     && composer global require hirak/prestissimo  \
     && composer global require phpspec/phpspec  \
-    && composer global require phpunit/phpunit  \
+    && composer global require "phpunit/phpunit:^8.0"  \
+    && composer global require brianium/paratest \
     && composer global require squizlabs/php_codesniffer \
     && composer global require psy/psysh \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false unzip libaio-dev libxml2-dev libldap2-dev \
