@@ -19,6 +19,7 @@ ENV COMPOSER_VERSION master
 ENV PATH $COMPOSER_HOME/vendor/bin:$PATH
 ENV LIQUIBASE_VERSION 3.8.5
 ENV LIQUIBASE_DRIVER_PATH /usr/local/jdbc/ojdbc8.jar
+ENV HOME /home/www-data
 
 RUN apt-get update -qqq \
     && curl -A "Docker" -L https://blackfire.io/api/v1/releases/client/linux_static/amd64 | tar zxp -C /tmp \
@@ -26,22 +27,28 @@ RUN apt-get update -qqq \
     && rm -Rf /tmp/blackfire \
     && mkdir -p /usr/share/man/man1 \
     && apt-get install -y -qqq  \
-                    unzip \
                     libaio1 \
-                    libxml2-dev \
                     libaio-dev \
+                    libxml2 \
+                    libxml2-dev \
+                    libfreetype6 \
                     libfreetype6-dev \
+                    libjpeg62-turbo \
                     libjpeg62-turbo-dev \
                     libpng-dev \
-                    strace \
-                    vim \
-                    less \
                     libzip4 \
                     libzip-dev \
-                    net-tools \
                     libbz2-1.0 \
                     libbz2-dev \
                     libldap2-dev \
+                    default-jre \
+                    unzip \
+                    strace \
+                    vim \
+                    git \
+                    python \
+                    less \
+                    net-tools \
     && rm -R /usr/share/man/man1 \
     && unzip /tmp/instantclient.zip -d /usr/local/ \
     && unzip /tmp/sdk.zip -d /usr/local/ \
@@ -49,6 +56,9 @@ RUN apt-get update -qqq \
     && echo '/usr/local/instantclient' > /etc/ld.so.conf.d/oracle-instantclient.conf \
     && ldconfig \
     && echo 'instantclient,/usr/local/instantclient' | pecl install oci8 \
+    && docker-php-ext-configure gd \
+       --with-jpeg=/usr/include/   \
+       --with-freetype=/usr/include/ \
     && docker-php-ext-install gd \
     && docker-php-ext-install soap \
     && docker-php-ext-install zip \
@@ -84,6 +94,9 @@ RUN apt-get update -qqq \
     && rm /tmp -r \
     && mkdir -p /app/web \
     && chown www-data:www-data -R /app \
+    && mkdir -p "${HOME}" \
+    && chown www-data:www-data -R "${HOME}" \
+    && chmod ag+rwx -R "${HOME}" \
     && chmod a+rwx -R /composer
 
 COPY ./config/oci8.ini /usr/local/etc/php/conf.d/30-oci8.ini

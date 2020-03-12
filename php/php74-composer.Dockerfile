@@ -4,23 +4,34 @@ MAINTAINER Mikhail Chervontsev <m.a.chervontsev@gmail.com>
 ENV COMPOSER_HOME /composer
 ENV COMPOSER_VERSION master
 ENV PATH $COMPOSER_HOME/vendor/bin:$PATH
+ENV HOME /home/composer
 
 RUN apt-get update -qqq \
     && apt-get install -y -qqq  \
-                    unzip \
                     libaio1 \
-                    libxml2-dev \
                     libaio-dev \
+                    libxml2 \
+                    libxml2-dev \
+                    libfreetype6 \
                     libfreetype6-dev \
+                    libjpeg62-turbo \
                     libjpeg62-turbo-dev \
-                    strace \
-                    git \
-                    vim \
+                    libpng-dev \
+                    libzip4 \
+                    libzip-dev \
                     libbz2-1.0 \
                     libbz2-dev \
                     libldap2-dev \
-                    libzip4 \
-                    libzip-dev \
+                    unzip \
+                    strace \
+                    vim \
+                    git \
+                    python \
+                    less \
+                    net-tools \
+    && docker-php-ext-configure gd \
+       --with-jpeg=/usr/include/   \
+       --with-freetype=/usr/include/ \
     && docker-php-ext-install gd \
     && docker-php-ext-install soap \
     && docker-php-ext-install zip \
@@ -44,6 +55,9 @@ RUN apt-get update -qqq \
     && rm /tmp -r \
     && mkdir -p /app/web \
     && chown www-data:www-data -R /app \
+    && mkdir -p "${HOME}" \
+    && chown www-data:www-data -R "${HOME}" \
+    && chmod ag+rwx -R "${HOME}" \
     && chmod a+rwx -R /composer
 
 USER 1000
