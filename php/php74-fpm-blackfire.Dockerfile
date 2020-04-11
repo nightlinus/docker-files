@@ -2,8 +2,8 @@ FROM php:7.4-fpm
 MAINTAINER Mikhail Chervontsev <m.a.chervontsev@gmail.com>
 
 # Oracle instantclient
-COPY ./instantclient/instantclient-basiclite-linux.x64-19.5.0.0.0.zip /tmp/instantclient.zip
-COPY ./instantclient/instantclient-sdk-linux.x64-19.5.0.0.0.zip /tmp/sdk.zip
+COPY ./instantclient/instantclient-basiclite-linux.x64-19.6.0.0.0.zip /tmp/instantclient.zip
+COPY ./instantclient/instantclient-sdk-linux.x64-19.6.0.0.0.zip /tmp/sdk.zip
 
 # Install jdbc for liquibase
 COPY ./jdbc/ojdbc8.jar /usr/local/jdbc/ojdbc8.jar
@@ -17,7 +17,7 @@ ENV NLS_DATE_FORMAT YYYY-MM-DD HH24:MI:SS
 ENV COMPOSER_HOME /composer
 ENV COMPOSER_VERSION master
 ENV PATH $COMPOSER_HOME/vendor/bin:$PATH
-ENV LIQUIBASE_VERSION 3.8.5
+ENV LIQUIBASE_VERSION 3.8.9
 ENV LIQUIBASE_DRIVER_PATH /usr/local/jdbc/ojdbc8.jar
 ENV HOME /home/www-data
 
