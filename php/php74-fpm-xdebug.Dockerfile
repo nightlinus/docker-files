@@ -17,7 +17,7 @@ ENV NLS_DATE_FORMAT YYYY-MM-DD HH24:MI:SS
 ENV COMPOSER_HOME /composer
 ENV COMPOSER_VERSION master
 ENV PATH $COMPOSER_HOME/vendor/bin:/opt/phpspy:$PATH
-ENV LIQUIBASE_VERSION 3.8.9
+ENV LIQUIBASE_VERSION 3.10.2
 ENV LIQUIBASE_DRIVER_PATH /usr/local/jdbc/ojdbc8.jar
 ENV HOME /home/www-data
 
@@ -45,6 +45,7 @@ RUN apt-get update -qqq \
                     git \
                     python \
                     less \
+                    openssh-client \
                     net-tools \
     && rm -R /usr/share/man/man1 \
     && unzip /tmp/instantclient.zip -d /usr/local/ \
@@ -71,7 +72,7 @@ RUN apt-get update -qqq \
     && docker-php-ext-install ldap \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer global require phpspec/phpspec  \
-    && composer global require "phpunit/phpunit:^8.0"  \
+    && composer global require phpunit/phpunit  \
     && composer global require brianium/paratest \
     && composer global require psy/psysh \
     && curl -A "Docker" -o /tmp/liquibase.tar.gz -D - -L -s "https://github.com/liquibase/liquibase/releases/download/v${LIQUIBASE_VERSION}/liquibase-${LIQUIBASE_VERSION}.tar.gz" \
