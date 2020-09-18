@@ -105,6 +105,7 @@ COPY ./config/opcache.ini /usr/local/etc/php/conf.d/30-opcache.ini
 COPY ./config/php.ini /usr/local/etc/php/php.ini
 COPY ./config/fpm/php-fpm.conf /usr/local/etc/
 COPY ./config/fpm/pool.d/www73.conf /usr/local/etc/pool.d/www73.conf
+COPY ./instantclient/sqlnet.ora /etc/sqlnet.ora
 
 USER 1000
 

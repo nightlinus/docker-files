@@ -1,4 +1,4 @@
-FROM php:7.3-fpm
+FROM php:8.0.0beta2-fpm
 MAINTAINER Mikhail Chervontsev <m.a.chervontsev@gmail.com>
 
 # Oracle instantclient
@@ -17,7 +17,7 @@ ENV NLS_DATE_FORMAT YYYY-MM-DD HH24:MI:SS
 ENV COMPOSER_HOME /composer
 ENV COMPOSER_VERSION master
 ENV PATH $COMPOSER_HOME/vendor/bin:/opt/phpspy:$PATH
-ENV LIQUIBASE_VERSION 3.8.9
+ENV LIQUIBASE_VERSION 3.10.2
 ENV LIQUIBASE_DRIVER_PATH /usr/local/jdbc/ojdbc8.jar
 ENV HOME /home/www-data
 
@@ -45,6 +45,7 @@ RUN apt-get update -qqq \
                     git \
                     python \
                     less \
+                    openssh-client \
                     net-tools \
     && rm -R /usr/share/man/man1 \
     && unzip /tmp/instantclient.zip -d /usr/local/ \
@@ -54,7 +55,9 @@ RUN apt-get update -qqq \
     && ldconfig \
     && echo 'instantclient,/usr/local/instantclient' | pecl install oci8 \
     && pecl install xdebug \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && docker-php-ext-configure gd \
+       --with-jpeg=/usr/include/   \
+       --with-freetype=/usr/include/ \
     && docker-php-ext-install gd \
     && docker-php-ext-install soap \
     && docker-php-ext-install zip \
@@ -62,16 +65,16 @@ RUN apt-get update -qqq \
     && docker-php-ext-install pcntl \
     && docker-php-ext-install intl \
     && docker-php-ext-install bcmath \
-    && docker-php-ext-install opcache \
     && docker-php-ext-install calendar \
+    && docker-php-ext-install opcache \
     && docker-php-ext-install exif \
     && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
     && docker-php-ext-install ldap \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer global require phpspec/phpspec  \
-    && composer global require "phpunit/phpunit:^8.0"  \
-    && composer global require psy/psysh \
+    && composer global require phpunit/phpunit  \
     && composer global require brianium/paratest \
+    && composer global require psy/psysh \
     && curl -A "Docker" -o /tmp/liquibase.tar.gz -D - -L -s "https://github.com/liquibase/liquibase/releases/download/v${LIQUIBASE_VERSION}/liquibase-${LIQUIBASE_VERSION}.tar.gz" \
     && mkdir -p /opt/liquibase \
     && tar -xzf /tmp/liquibase.tar.gz -C /opt/liquibase \
