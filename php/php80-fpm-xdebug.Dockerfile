@@ -1,9 +1,9 @@
-FROM php:8.0.0beta2-fpm
+FROM php:8.0-rc-fpm
 MAINTAINER Mikhail Chervontsev <m.a.chervontsev@gmail.com>
 
 # Oracle instantclient
-COPY ./instantclient/instantclient-basiclite-linux.x64-19.6.0.0.0.zip /tmp/instantclient.zip
-COPY ./instantclient/instantclient-sdk-linux.x64-19.6.0.0.0.zip /tmp/sdk.zip
+COPY ./instantclient/instantclient-basiclite-linux.x64-19.9.0.0.0.zip /tmp/instantclient.zip
+COPY ./instantclient/instantclient-sdk-linux.x64-19.9.0.0.0.zip /tmp/sdk.zip
 
 # Install jdbc for liquibase
 COPY ./jdbc/ojdbc8.jar /usr/local/jdbc/ojdbc8.jar
@@ -17,7 +17,7 @@ ENV NLS_DATE_FORMAT YYYY-MM-DD HH24:MI:SS
 ENV COMPOSER_HOME /composer
 ENV COMPOSER_VERSION master
 ENV PATH $COMPOSER_HOME/vendor/bin:/opt/phpspy:$PATH
-ENV LIQUIBASE_VERSION 3.10.2
+ENV LIQUIBASE_VERSION 3.10.3
 ENV LIQUIBASE_DRIVER_PATH /usr/local/jdbc/ojdbc8.jar
 ENV HOME /home/www-data
 
@@ -47,14 +47,13 @@ RUN apt-get update -qqq \
                     less \
                     openssh-client \
                     net-tools \
+                    wget \
     && rm -R /usr/share/man/man1 \
     && unzip /tmp/instantclient.zip -d /usr/local/ \
     && unzip /tmp/sdk.zip -d /usr/local/ \
-    && ln -s /usr/local/instantclient* /usr/local/instantclient \
-    && echo '/usr/local/instantclient' > /etc/ld.so.conf.d/oracle-instantclient.conf \
-    && ldconfig \
-    && echo 'instantclient,/usr/local/instantclient' | pecl install oci8 \
-    && pecl install xdebug \
+    && wget https://github.com/FriendsOfPHP/pickle/releases/download/v0.6.0/pickle.phar \
+    && mv pickle.phar /usr/local/bin/pickle \
+    && chmod +x /usr/local/bin/pickle \
     && docker-php-ext-configure gd \
        --with-jpeg=/usr/include/   \
        --with-freetype=/usr/include/ \
@@ -70,10 +69,18 @@ RUN apt-get update -qqq \
     && docker-php-ext-install exif \
     && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
     && docker-php-ext-install ldap \
+    && ln -s /usr/local/instantclient* /usr/local/instantclient \
+    && echo '/usr/local/instantclient' > /etc/ld.so.conf.d/oracle-instantclient.conf \
+    && ldconfig \
+    && docker-php-ext-configure oci8 --with-oci8=instantclient,/usr/local/instantclient \
+    && docker-php-ext-install oci8 \
+    && git clone --depth 1 https://github.com/xdebug/xdebug.git /usr/src/php/ext/xdebug \
+    && docker-php-ext-configure xdebug --enable-xdebug-dev \
+    && docker-php-ext-install xdebug \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer global require phpspec/phpspec  \
     && composer global require phpunit/phpunit  \
-    && composer global require brianium/paratest \
+    #&& composer global require brianium/paratest \
     && composer global require psy/psysh \
     && curl -A "Docker" -o /tmp/liquibase.tar.gz -D - -L -s "https://github.com/liquibase/liquibase/releases/download/v${LIQUIBASE_VERSION}/liquibase-${LIQUIBASE_VERSION}.tar.gz" \
     && mkdir -p /opt/liquibase \
@@ -84,14 +91,15 @@ RUN apt-get update -qqq \
     && git clone https://github.com/adsr/phpspy.git /opt/phpspy \
     && cd /opt/phpspy \
     && make \
-    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false libaio-dev unzip python libxml2-dev libldap2-dev  \
+    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false libaio-dev unzip python libxml2-dev libldap2-dev wget  \
     && apt-get clean -y \
-    && rm /tmp -r \
+    && rm -rfv "/tmp/*" \
     && mkdir -p /app/web \
     && chown www-data:www-data -R /app \
     && mkdir -p "${HOME}" \
     && chown www-data:www-data -R "${HOME}" \
     && chmod ag+rwx -R "${HOME}" \
+    && git config --global core.safecrlf false \
     && chmod a+rwx -R /composer
 
 COPY ./config/oci8.ini /usr/local/etc/php/conf.d/30-oci8.ini
