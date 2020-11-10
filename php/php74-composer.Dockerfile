@@ -44,7 +44,6 @@ RUN apt-get update -qqq \
     && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
     && docker-php-ext-install ldap \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && composer global require hirak/prestissimo  \
     && composer global require phpspec/phpspec  \
     && composer global require phpunit/phpunit  \
     && composer global require brianium/paratest \
@@ -52,12 +51,13 @@ RUN apt-get update -qqq \
     && composer global require psy/psysh \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false unzip libaio-dev libxml2-dev libldap2-dev \
     && apt-get clean -y \
-    && rm /tmp -r \
+    && rm -rf "/tmp/*" \
     && mkdir -p /app/web \
     && chown www-data:www-data -R /app \
     && mkdir -p "${HOME}" \
     && chown www-data:www-data -R "${HOME}" \
     && chmod ag+rwx -R "${HOME}" \
+    && git config --global core.safecrlf false \
     && chmod a+rwx -R /composer
 
 USER 1000

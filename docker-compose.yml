@@ -29,10 +29,10 @@ services:
       dockerfile: php74-fpm-xdebug.Dockerfile
     image: nightlinus/hermes:7.4-fpm-xdebug
     container_name: php74-xdebug
-#  php80:
-#    build:
-#      context: ./php/
-#      dockerfile: php80-fpm-xdebug.Dockerfile
-#    image: nightlinus/hermes:8.0-fpm-xdebug
-#    container_name: php80-xdebug
+  php80:
+    build:
+      context: ./php/
+      dockerfile: php80-fpm-xdebug.Dockerfile
+    image: nightlinus/hermes:8.0-fpm-xdebug
+    container_name: php80-xdebug
 
