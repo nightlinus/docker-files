@@ -48,6 +48,7 @@ RUN apt-get update -qqq \
                     openssh-client \
                     net-tools \
                     wget \
+                    gdb \
     && rm -R /usr/share/man/man1 \
     && unzip /tmp/instantclient.zip -d /usr/local/ \
     && unzip /tmp/sdk.zip -d /usr/local/ \
@@ -100,10 +101,12 @@ RUN apt-get update -qqq \
     && chown www-data:www-data -R "${HOME}" \
     && chmod ag+rwx -R "${HOME}" \
     && git config --global core.safecrlf false \
-    && chmod a+rwx -R /composer
+    && chmod a+rwx -R /composer \
+    && rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && rm /usr/local/etc/php/conf.d/docker-php-ext-oci8.ini
 
 COPY ./config/oci8.ini /usr/local/etc/php/conf.d/30-oci8.ini
-COPY ./config/xdebug.ini /usr/local/etc/php/conf.d/30-xdebug.ini
+#COPY ./config/xdebug.ini /usr/local/etc/php/conf.d/30-xdebug.ini
 COPY ./config/opcache.ini /usr/local/etc/php/conf.d/30-opcache.ini
 COPY ./config/php.ini /usr/local/etc/php/php.ini
 COPY ./config/fpm/php-fpm.conf /usr/local/etc/
