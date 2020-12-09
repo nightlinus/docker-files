@@ -1,4 +1,4 @@
-FROM php:8.0-rc-fpm
+FROM php:8.0-fpm
 MAINTAINER Mikhail Chervontsev <m.a.chervontsev@gmail.com>
 
 # Oracle instantclient
@@ -52,9 +52,6 @@ RUN apt-get update -qqq \
     && rm -R /usr/share/man/man1 \
     && unzip /tmp/instantclient.zip -d /usr/local/ \
     && unzip /tmp/sdk.zip -d /usr/local/ \
-    && wget https://github.com/FriendsOfPHP/pickle/releases/download/v0.6.0/pickle.phar \
-    && mv pickle.phar /usr/local/bin/pickle \
-    && chmod +x /usr/local/bin/pickle \
     && docker-php-ext-configure gd \
        --with-jpeg=/usr/include/   \
        --with-freetype=/usr/include/ \
@@ -106,7 +103,7 @@ RUN apt-get update -qqq \
     && rm /usr/local/etc/php/conf.d/docker-php-ext-oci8.ini
 
 COPY ./config/oci8.ini /usr/local/etc/php/conf.d/30-oci8.ini
-#COPY ./config/xdebug.ini /usr/local/etc/php/conf.d/30-xdebug.ini
+COPY ./config/xdebug3.ini /usr/local/etc/php/conf.d/30-xdebug.ini
 COPY ./config/opcache.ini /usr/local/etc/php/conf.d/30-opcache.ini
 COPY ./config/php.ini /usr/local/etc/php/php.ini
 COPY ./config/fpm/php-fpm.conf /usr/local/etc/
