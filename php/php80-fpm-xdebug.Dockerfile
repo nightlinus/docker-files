@@ -2,8 +2,8 @@ FROM php:8.0-fpm
 MAINTAINER Mikhail Chervontsev <m.a.chervontsev@gmail.com>
 
 # Oracle instantclient
-COPY ./instantclient/instantclient-basiclite-linux.x64-19.9.0.0.0.zip /tmp/instantclient.zip
-COPY ./instantclient/instantclient-sdk-linux.x64-19.9.0.0.0.zip /tmp/sdk.zip
+COPY ./instantclient/instantclient-basiclite-linux.x64-21.1.0.0.0.zip /tmp/instantclient.zip
+COPY ./instantclient/instantclient-sdk-linux.x64-21.1.0.0.0.zip /tmp/sdk.zip
 
 # Install jdbc for liquibase
 COPY ./jdbc/ojdbc8.jar /usr/local/jdbc/ojdbc8.jar
@@ -108,6 +108,7 @@ COPY ./config/opcache.ini /usr/local/etc/php/conf.d/30-opcache.ini
 COPY ./config/php.ini /usr/local/etc/php/php.ini
 COPY ./config/fpm/php-fpm.conf /usr/local/etc/
 COPY ./config/fpm/pool.d/www73.conf /usr/local/etc/pool.d/www73.conf
+COPY ./instantclient/sqlnet.ora /etc/sqlnet.ora
 
 USER 1000
 
