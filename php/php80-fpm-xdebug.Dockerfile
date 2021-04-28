@@ -44,6 +44,7 @@ RUN apt-get update -qqq \
                     vim \
                     git \
                     python \
+                    ansible \
                     less \
                     openssh-client \
                     net-tools \
